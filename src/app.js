@@ -20,8 +20,13 @@ app.get('/', (req, res) => {
 
 // Ruta para obtener usuarios
 app.get('/api/users', async (req, res) => {
-  const [rows] = await pool.query('SELECT * FROM users');
-  res.json(rows);
+  try {
+    const [rows] = await pool.query('SELECT * FROM users');
+    res.json(rows);
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+    res.status(500).json({ error: 'Error al obtener usuarios' });
+  }
 });
 
 
