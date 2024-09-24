@@ -13,7 +13,7 @@ body {
 
 /* Estilos para la barra de navegación */
 .navbar {
-  background-color: rgba(6, 124, 0, 0.179);
+  background-color: rgba(6, 124, 0, 0.487);
   padding: 15px;
   text-align: center;
   position: fixed;
@@ -52,9 +52,9 @@ body {
   background-color: white;
   border: 2px solid #ccc;
   border-radius: 12px;
-  padding: 50px; /* Ajuste del padding */
+  padding: 160px; /* Ajuste del padding */
   flex: 1;
-  min-width: 250px;
+  min-width: 100px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -97,9 +97,9 @@ body {
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 80px;
-  right: 30px;
-  width: 250px;
+  top: 62px;
+  right: 40px;
+  width: 200px;
   max-width: 300px; /* Ancho máximo */
   margin: 20px auto; /* Centrar en dispositivos móviles */
 }
@@ -111,7 +111,7 @@ body {
 
 /* Estilos para el footer */
 .dashboard-footer {
-  background-color: rgba(6, 124, 0, 0.179);
+  background-color: rgba(6, 124, 0, 0.487);
   color: white;
   padding: 10px 0;
   text-align: center;
