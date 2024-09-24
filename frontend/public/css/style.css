@@ -13,7 +13,7 @@ body {
 
 /* Estilos para la barra de navegación */
 .navbar {
-  background-color: #32CD32; /* Color verde lima */
+  background-color: rgba(6, 124, 0, 0.179);
   padding: 15px;
   text-align: center;
   position: fixed;
@@ -78,8 +78,15 @@ body {
 .navbar-logo {
   height: 50px;
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 2px;
+  left: 5px;
+}
+
+.navbar-logo2 {
+  height: 50px;
+  position: absolute;
+  top: 2px;
+  right: 30px;
 }
 
 /* Estilos para el nuevo contenedor en la parte superior derecha */
@@ -104,7 +111,7 @@ body {
 
 /* Estilos para el footer */
 .dashboard-footer {
-  background-color: #32CD32;
+  background-color: rgba(6, 124, 0, 0.179);
   color: white;
   padding: 10px 0;
   text-align: center;
@@ -135,10 +142,11 @@ body {
     }
 
       /* Ajustar el contenedor superior derecho */
-  .top-right-container {
-    width: 80%;
-    margin-top: 10px;
-  }
+      .top-right-container {
+        position: static; /* Cambia a posición estática en pantallas más pequeñas */
+        width: 90%; /* Ajusta el ancho */
+        margin: 20px 0; /* Espaciado arriba y abajo */
+      }
   /* Ajustes para la tabla de usuarios */
   #usersTable {
     width: 100%;
