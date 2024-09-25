@@ -28,3 +28,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Poll every 5 seconds (10000 milliseconds)
   setInterval(fetchUsers, 10000);
 });
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  try {
+    const response = await fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      // Redirigir a login.html tras cerrar sesión
+      window.location.href = '/';
+    } else {
+      console.error('Error al cerrar sesión:', result.message);
+    }
+  } catch (error) {
+    console.error('Error en la solicitud de cierre de sesión:', error);
+  }
+});
+
