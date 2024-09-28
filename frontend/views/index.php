@@ -1,24 +1,48 @@
 <?php
-// Comprobar si se ha enviado una solicitud POST
+// Conectar a la base de datos MySQL usando las credenciales proporcionadas por Railway
+$host = 'HOST_DE_MYSQL';   // Reemplaza con el host de la base de datos (puedes obtenerlo en Railway)
+$db   = 'NOMBRE_BD';       // Nombre de la base de datos
+$user = 'USUARIO_BD';      // Usuario de la base de datos
+$pass = 'CONTRASEÑA_BD';   // Contraseña de la base de datos
+
+$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
+}
+
+// Verificar si se recibe una solicitud POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Obtener los datos en formato JSON
+    // Obtener los datos enviados en formato JSON
     $json_data = file_get_contents('php://input');
-    
-    // Convertir los datos JSON a un arreglo de PHP
     $data = json_decode($json_data, true);
-
-    // Comprobar si los datos se han recibido correctamente
-    if ($data) {
-        // Aquí puedes hacer algo con los datos, por ejemplo guardarlos en una base de datos
-        file_put_contents('data.txt', print_r($data, true), FILE_APPEND);
-
-        // Respuesta de éxito
-        echo json_encode(['status' => 'success', 'message' => 'Data received']);
+    
+    // Verificar si los datos son válidos
+    if ($data && isset($data['sensor']) && isset($data['valor'])) {
+        // Preparar la consulta SQL para insertar los datos
+        $stmt = $pdo->prepare("INSERT INTO sensores (sensor, valor) VALUES (:sensor, :valor)");
+        $stmt->execute([
+            ':sensor' => $data['sensor'],
+            ':valor'  => $data['valor'],
+        ]);
+        
+        // Enviar una respuesta de éxito
+        echo json_encode(['status' => 'success', 'message' => 'Data stored successfully']);
     } else {
-        // Error en la recepción de datos
-        echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
+        // Enviar una respuesta de error si los datos no son válidos
+        echo json_encode(['status' => 'error', 'message' => 'Invalid data received']);
     }
 } else {
-    // Si no es una solicitud POST, mostrar un mensaje de error
+    // Si no es una solicitud POST, devolver un mensaje de error
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
+?>
+
