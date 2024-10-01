@@ -73,6 +73,17 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// Ruta para obtener usuarios (opcional)
+app.get('/api/datos_baston', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM datos_baston ORDER BY Fecha DESC');
+    res.json(rows);
+  } catch (error) {
+    console.error('Error al obtener Dastos del Baston:', error);
+    res.status(500).json({ error: 'Error al obtener Datos del Baston' });
+  }
+});
+
 // Cerrar sesión
 app.post('/api/logout', (req, res) => {
   req.session.destroy(err => {

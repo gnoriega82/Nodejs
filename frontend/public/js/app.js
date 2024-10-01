@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  // Función para obtener usuarios
   const fetchUsers = async () => {
     try {
       const response = await fetch('/api/users');
@@ -22,13 +23,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
 
-  // Fetch users initially
-  await fetchUsers();
+  // Función para obtener los datos del bastón inteligente
+  const fetchDatosBaston = async () => {
+    try {
+      const response = await fetch('/api/datos_baston');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const datosBaston = await response.json();
+      
+      // Datos GPS
+      const gpsContainer = document.querySelector('#gpsData');
+      gpsContainer.innerHTML = ''; // Limpiar contenido anterior
+      datosBaston.forEach(dato => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${dato.id}</td>
+          <td>${dato.latitud}</td>
+          <td>${dato.longitud}</td>
+          <td>${new Date(dato.Fecha).toLocaleString()}</td>
+        `;
+        gpsContainer.appendChild(row);
+      });
 
-  // Poll every 5 seconds (10000 milliseconds)
+      // Datos Giroscopio
+      const giroscopioContainer = document.querySelector('#giroscopioData');
+      giroscopioContainer.innerHTML = ''; // Limpiar contenido anterior
+      datosBaston.forEach(dato => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${dato.id}</td>
+          <td>${dato.posicion}</td>
+          <td>${new Date(dato.Fecha).toLocaleString()}</td>
+        `;
+        giroscopioContainer.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error fetching datos_baston:', error);
+    }
+  };
+
+  // Obtener datos al cargar la página
+  await fetchUsers();
+  await fetchDatosBaston();
+
+  // Actualizar cada 10 segundos
   setInterval(fetchUsers, 10000);
+  setInterval(fetchDatosBaston, 10000);
 });
 
+// Cerrar sesión
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   try {
     const response = await fetch('/api/logout', {
@@ -41,7 +85,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
     const result = await response.json();
     
     if (result.success) {
-      // Redirigir a login.html tras cerrar sesión
+      // Redirigir a la página de login tras cerrar sesión
       window.location.href = '/';
     } else {
       console.error('Error al cerrar sesión:', result.message);
@@ -50,4 +94,3 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
     console.error('Error en la solicitud de cierre de sesión:', error);
   }
 });
-
