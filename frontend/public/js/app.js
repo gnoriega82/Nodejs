@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  const MAX_DATOS = 10; // Número máximo de datos a mostrar
+
   // Función para obtener usuarios
   const fetchUsers = async () => {
     try {
@@ -7,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         throw new Error('Network response was not ok');
       }
       const users = await response.json();
-      
+
       const usersTableBody = document.querySelector('#usersTable tbody');
       usersTableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
       users.forEach(user => {
@@ -30,18 +32,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const datosBaston = await response.json();
-      
+      let datosBaston = await response.json();
+
+      // Limitar los datos a los más recientes
+      const datosLimitados = datosBaston.slice(0, MAX_DATOS); // Limitar a los últimos 3 datos
+
       // Datos GPS
       const gpsContainer = document.querySelector('#gpsData');
       gpsContainer.innerHTML = ''; // Limpiar contenido anterior
-      datosBaston.forEach(dato => {
+      datosLimitados.forEach(dato => {
+        const googleMapsLink = `https://www.google.com/maps?q=${dato.latitud},${dato.longitud}`;
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${dato.id}</td>
           <td>${dato.latitud}</td>
           <td>${dato.longitud}</td>
           <td>${new Date(dato.Fecha).toLocaleString()}</td>
+          <td><a href="${googleMapsLink}" target="_blank">Ver en Google Maps</a></td>
         `;
         gpsContainer.appendChild(row);
       });
@@ -49,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Datos Giroscopio
       const giroscopioContainer = document.querySelector('#giroscopioData');
       giroscopioContainer.innerHTML = ''; // Limpiar contenido anterior
-      datosBaston.forEach(dato => {
+      datosLimitados.forEach(dato => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${dato.id}</td>
@@ -83,7 +90,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
     });
 
     const result = await response.json();
-    
+
     if (result.success) {
       // Redirigir a la página de login tras cerrar sesión
       window.location.href = '/';
