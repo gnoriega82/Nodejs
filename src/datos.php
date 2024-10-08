@@ -1,6 +1,6 @@
 <?php
 // Conectar a la base de datos MySQL
-$host = 'tmysql.railway.internal';  // El host de tu base de datos MySQL en Railway
+$host = 'nodejs-production-f54f.up.railway.app';  // El host de tu base de datos MySQL en Railway
 $db = 'datos_baston';  // Nombre de tu base de datos
 $user = 'root';  // Usuario de tu base de datos
 $pass = 'dmzLWlPlOIiMGMjokiKpkrQIWrokPQsq';  // Contraseña de tu base de datos
