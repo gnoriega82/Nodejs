@@ -1,9 +1,9 @@
 <?php
 // Conectar a la base de datos MySQL
-$host = 'tmysql.railway.internal';  // El host de tu base de datos MySQL en Railway
+$host = 'mysql.railway.internal';  // El host de tu base de datos MySQL en Railway
 $db = 'datos_baston';  // Nombre de tu base de datos
 $user = 'root';  // Usuario de tu base de datos
-$pass = 'dmzLWlPlOIiMGMjokiKpkrQIWrokPQsq';  // Contraseña de tu base de datos
+$pass = 'hbVNPuJtmkfcxsoOQZQuxxhfoyuznsbw';  // Contraseña de tu base de datos
 
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 $options = [
