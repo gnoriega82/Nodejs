@@ -1,20 +1,25 @@
 <?php
-// Datos de conexión a la base de datos en Railway.app
+// Conectar a la base de datos MySQL
+$host = 'mysql.railway.internal';  // El host de tu base de datos MySQL en Railway
+$db = 'datos_baston';  // Nombre de tu base de datos
+$user = 'root';  // Usuario de tu base de datos
+$pass = 'hbVNPuJtmkfcxsoOQZQuxxhfoyuznsbw';  // Contraseña de tu base de datos
 
-$servername = "nodejs-production-f54f.up.railway.app";  // Ejemplo: containers-us-west-36.railway.app
-$username = "root";            // Usuario de la base de datos
-$password = "dmzLWlPlOIiMGMjokiKpkrQIWrokPQsq";         // Contraseña de la base de datos
-$dbname = "datos_baston";        // Nombre de la base de datos
-$port = "3306";                 // Puerto de la base de datos (Railway)
+$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+];
 
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
-
-// Verificar la conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Error en la conexión a la base de datos: ' . $e->getMessage()]);
+    exit;
 }
 
-// Verificar si los valores de los sensores fueron enviados
+// Verificar si la solicitud es POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Obtener los datos JSON enviados por Arduino
     $json_data = file_get_contents('php://input');
@@ -41,7 +46,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Si no es una solicitud POST, devolver un mensaje de error
     echo json_encode(['status' => 'error', 'message' => 'Método de solicitud inválido']);
 }
-
-// Cerrar la conexión
-$conn->close();
 ?>
