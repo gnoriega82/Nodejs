@@ -1,7 +1,7 @@
 <?php
 // Datos de conexión a la base de datos en Railway.app
 
-$servername = "nodejs-production-f54f.up.railway.app";  // Ejemplo: containers-us-west-36.railway.app
+$servername = "tmysql.railway.internal";  // Ejemplo: containers-us-west-36.railway.app
 $username = "root";            // Usuario de la base de datos
 $password = "dmzLWlPlOIiMGMjokiKpkrQIWrokPQsq";         // Contraseña de la base de datos
 $dbname = "datos_baston";        // Nombre de la base de datos
